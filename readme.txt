@@ -6,8 +6,7 @@ En la función principal (main) se crea un arreglo de usuarios y se llama a la f
 Luego, se solicita al usuario que ingrese su nombre y contraseña, y se llama a la función iniciarSesion para verificar si los datos son válidos. 
 Si el inicio de sesión es exitoso, se muestra un mensaje de éxito.
 
-Tambien se realizó un sistema de gestión de libros que permite al usuario agregar, mostrar, modificar y eliminar libros de una 
-lista almacenada en un archivo CSV llamado "libros.csv".
+Tambien se realizó un sistema de gestión de libros que permite al usuario agregar, mostrar, modificar y eliminar libros de una lista almacenada en un archivo CSV llamado "libros.csv".
 El programa comienza mostrando un menú con las opciones de agregar libro, mostrar libros, modificar libro, eliminar libro y salir. 
 Dependiendo de la opción seleccionada por el usuario, se ejecuta la función correspondiente.
 La función agregarLibro permite al usuario ingresar el nombre y género de un nuevo libro, que luego se registra en el archivo "libros.csv".
