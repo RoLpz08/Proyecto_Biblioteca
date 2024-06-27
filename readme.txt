@@ -8,9 +8,9 @@ Si el inicio de sesión es exitoso, se muestra un mensaje de éxito.
 
 Tambien se realizó un sistema de gestión de libros que permite al usuario agregar, mostrar, modificar y eliminar libros de una lista almacenada en un archivo CSV llamado "libros.csv".
 El programa comienza mostrando un menú con las opciones de agregar libro, mostrar libros, modificar libro, eliminar libro y salir. 
-Dependiendo de la opción seleccionada por el usuario, se ejecuta la función correspondiente.
-La función agregarLibro permite al usuario ingresar el nombre y género de un nuevo libro, que luego se registra en el archivo "libros.csv".
+Dependiendo de la opción seleccionada, se ejecuta la función correspondiente.
+La función agregarLibro permite ingresar el nombre y género de un nuevo libro, que luego se registra en el archivo "libros.csv".
 La función mostrarLibros lee el archivo "libros.csv" y muestra en pantalla los libros registrados, mostrando su ID, nombre, género y si está alquilado o no.
-La función modificarLibro permite al usuario ingresar el ID de un libro, modificar su nombre y género, y actualiza la información en el archivo "libros.csv".
-La función eliminarLibro permite al usuario ingresar el ID de un libro, lo elimina de la lista y actualiza el archivo "libros.csv".
+La función modificarLibro permite ingresar el ID de un libro, modificar su nombre y género, y actualiza la información en el archivo "libros.csv".
+La función eliminarLibro permite ingresar el ID de un libro, lo elimina de la lista y actualiza el archivo "libros.csv".
 El programa sigue ejecutándose y mostrando el menú hasta que el usuario selecciona la opción de salir (0).
