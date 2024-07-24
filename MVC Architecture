@@ -1,1 +1,351 @@
+Main.cpp 
 
+#include <iostream>
+#include "vista/Vista.h"
+#include "controlador/UsuariosController.h"
+
+using namespace std;
+
+int main() {
+    Vista::mostrarMenu();
+
+    int opcion = 0;
+    cin >> opcion;
+
+    switch (opcion) {
+        case 1:
+            UsuariosController::registrarUsuario();
+            break;
+        case 2: {
+            string username, password;
+            cout << "Ingrese el nombre de usuario: ";
+            cin >> username;
+            cout << "Ingrese la contraseña: ";
+            cin >> password;
+            if (UsuariosController::iniciarSesion(username, password)) {
+                UsuariosController::accionesSegunRol(username);
+            }
+            break;
+        }
+        case 3:
+            cout << "Gracias por usar el sistema de biblioteca. ¡Hasta pronto!" << endl;
+            break;
+        default:
+            cout << "Opción inválida" << endl;
+            break;
+    }
+
+    return 0;
+}
+
+Libro.h
+
+#ifndef LIBRO_H
+#define LIBRO_H
+
+#include <string>
+
+struct Libro {
+    std::string nombre;
+    std::string genero;
+    bool prestado;
+    std::string usuario;
+};
+
+#endif // LIBRO_H
+
+Usuario.h 
+
+#ifndef USUARIO_H
+#define USUARIO_H
+
+#include <string>
+
+enum class Rol { ADMINISTRADOR, EMPLEADO, CLIENTE };
+
+struct Usuario {
+    std::string username;
+    std::string password;
+    Rol rol;
+};
+
+#endif // USUARIO_H
+
+Vista.h
+
+#ifndef VISTA_H
+#define VISTA_H
+
+#include <vector>
+#include "../modelo/Libro.h"
+
+namespace Vista {
+    void mostrarMenu();
+    void menuAdministrador();
+    void menuEmpleado();
+    void menuCliente();
+    void mostrarLibros(const std::vector<Libro>& libros);
+}
+
+#endif // VISTA_H
+
+Vista.cpp
+
+#include "Vista.h"
+#include <iostream>
+
+using namespace std;
+
+namespace Vista {
+    void mostrarMenu() {
+        cout << "BIENVENIDO AL SISTEMA DE BIBLIOTECA" << endl;
+        cout << "1. Registrar nuevo usuario" << endl;
+        cout << "2. Iniciar sesión" << endl;
+        cout << "3. Salir" << endl;
+    }
+
+    void menuAdministrador() {
+        cout << "Menu de administrador" << endl;
+        cout << "1. Registrar usuarios" << endl;
+        cout << "2. Borrar usuario" << endl;
+        cout << "3. Mostrar libros" << endl;
+        cout << "4. Cargar libros" << endl;
+        cout << "5. Borrar libro" << endl;
+        cout << "6. Modificar libro" << endl;
+        cout << "7. Mostrar historial de préstamos" << endl;
+        cout << "8. Salir" << endl;
+    }
+
+    void menuEmpleado() {
+        cout << "Menu de empleado" << endl;
+        cout << "1. Mostrar libros" << endl;
+        cout << "2. Cargar libros" << endl;
+        cout << "3. Borrar libro" << endl;
+        cout << "4. Modificar libro" << endl;
+        cout << "5. Salir" << endl;
+    }
+
+    void menuCliente() {
+        cout << "Menu de cliente" << endl;
+        cout << "1. Mostrar libros" << endl;
+        cout << "2. Prestar libro" << endl;
+        cout << "3. Devolver libro" << endl;
+        cout << "4. Salir" << endl;
+    }
+
+    void mostrarLibros(const std::vector<Libro>& libros) {
+        if (libros.empty()) {
+            cout << "No hay libros disponibles" << endl;
+            return;
+        }
+
+        cout << "Libros disponibles:" << endl;
+        for (const auto& libro : libros) {
+            cout << "Nombre: " << libro.nombre << ", Género: " << libro.genero << ", Estado: " << (libro.prestado ? "Prestado" : "Disponible") << endl;
+        }
+    }
+}
+
+LibrosController.h
+
+#ifndef LIBROS_CONTROLLER_H
+#define LIBROS_CONTROLLER_H
+
+#include <vector>
+#include "../modelo/Libro.h"
+
+namespace LibrosController {
+    extern std::vector<Libro> libros;
+
+    void cargarLibros();
+    void guardarLibros();
+    void mostrarLibros();
+    void borrarLibro(int indice);
+    void modificarLibro(int indice, const Libro& nuevoLibro);
+}
+
+#endif // LIBROS_CONTROLLER_H
+
+LibrosController.cpp
+
+#include "LibrosController.h"
+#include "../vista/Vista.h"
+#include <fstream>
+#include <iostream>
+
+namespace LibrosController {
+    std::vector<Libro> libros;
+
+    void cargarLibros() {
+        // Implementación para cargar libros desde archivo
+    }
+
+    void guardarLibros() {
+        // Implementación para guardar libros en archivo
+    }
+
+    void mostrarLibros() {
+        // Implementación para mostrar libros en la vista
+    }
+
+    void borrarLibro(int indice) {
+        // Implementación para borrar un libro
+    }
+
+    void modificarLibro(int indice, const Libro& nuevoLibro) {
+        // Implementación para modificar un libro
+    }
+}
+
+UsuariosController.h
+
+#ifndef USUARIOS_CONTROLLER_H
+#define USUARIOS_CONTROLLER_H
+
+#include <string>
+#include <vector>
+#include "../modelo/Usuario.h"
+
+namespace UsuariosController {
+    extern std::vector<Usuario> usuarios;
+
+    void cargarUsuarios();
+    void guardarUsuarios();
+    void registrarUsuario();
+    bool iniciarSesion(const std::string& username, const std::string& password);
+    void accionesSegunRol(const std::string& username);
+}
+
+#endif // USUARIOS_CONTROLLER_H
+
+UsuariosController.cpp
+
+#include "UsuariosController.h"
+#include "../vista/Vista.h"
+#include <fstream>
+#include <iostream>
+
+namespace UsuariosController {
+    std::vector<Usuario> usuarios;
+
+    void cargarUsuarios() {
+        std::ifstream file("Users_Password_Rol.csv");
+        if (!file.is_open()) {
+            std::cout << "Error al abrir el archivo Users_Password_Rol.csv" << std::endl;
+            return;
+        }
+
+        usuarios.clear();
+        std::string linea;
+        while (std::getline(file, linea)) {
+            std::istringstream ss(linea);
+            std::string username, password, rol_str;
+            std::getline(ss, username, ',');
+            std::getline(ss, password, ',');
+            std::getline(ss, rol_str);
+
+            Rol rol;
+            if (rol_str == "Admin") {
+                rol = Rol::ADMINISTRADOR;
+            } else if (rol_str == "Employee") {
+                rol = Rol::EMPLEADO;
+            } else {
+                rol = Rol::CLIENTE;
+            }
+
+            usuarios.push_back({username, password, rol});
+        }
+
+        file.close();
+    }
+
+    void guardarUsuarios() {
+        std::ofstream file("Users_Password_Rol.csv");
+        if (!file.is_open()) {
+            std::cout << "Error al abrir el archivo Users_Password_Rol.csv para escritura" << std::endl;
+            return;
+        }
+
+        file << "Username,Password,Rol" << std::endl;
+        for (const auto& usuario : usuarios) {
+            std::string rol_str;
+            switch (usuario.rol) {
+                case Rol::ADMINISTRADOR:
+                    rol_str = "Admin";
+                    break;
+                case Rol::EMPLEADO:
+                    rol_str = "Employee";
+                    break;
+                case Rol::CLIENTE:
+                    rol_str = "Client";
+                    break;
+            }
+            file << usuario.username << "," << usuario.password << "," << rol_str << std::endl;
+        }
+
+        file.close();
+    }
+
+    void registrarUsuario() {
+        Usuario nuevoUsuario;
+        std::cout << "Ingrese el nombre de usuario: ";
+        std::cin >> nuevoUsuario.username;
+        std::cout << "Ingrese la contraseña: ";
+        std::cin >> nuevoUsuario.password;
+        std::cout << "Ingrese el rol (Admin (1), Employee (2) o Client (3)): ";
+        int opcion;
+        std::cin >> opcion;
+
+        switch (opcion) {
+            case 1:
+                nuevoUsuario.rol = Rol::ADMINISTRADOR;
+                break;
+            case 2:
+                nuevoUsuario.rol = Rol::EMPLEADO;
+                break;
+            case 3:
+                nuevoUsuario.rol = Rol::CLIENTE;
+                break;
+            default:
+                std::cout << "Opción inválida. Se utilizará el rol por defecto (Client)." << std::endl;
+                nuevoUsuario.rol = Rol::CLIENTE;
+                break;
+        }
+
+        usuarios.push_back(nuevoUsuario);
+        guardarUsuarios();
+
+        std::cout << "Usuario registrado exitosamente" << std::endl;
+    }
+
+    bool iniciarSesion(const std::string& username, const std::string& password) {
+        for (const auto& usuario : usuarios) {
+            if (usuario.username == username && usuario.password == password) {
+                std::cout << "Inicio de sesión exitoso" << std::endl;
+                std::cout << "Bienvenido " << (usuario.rol == Rol::ADMINISTRADOR ? "Administrador" : (usuario.rol == Rol::EMPLEADO ? "Empleado" : "Cliente")) << " " << usuario.username << "!" << std::endl;
+                return true;
+            }
+        }
+        std::cout << "Usuario o contraseña incorrectos" << std::endl;
+        return false;
+    }
+
+    void accionesSegunRol(const std::string& username) {
+        for (const auto& usuario : usuarios) {
+            if (usuario.username == username) {
+                switch (usuario.rol) {
+                    case Rol::ADMINISTRADOR:
+                        Vista::menuAdministrador();
+                        break;
+                    case Rol::EMPLEADO:
+                        Vista::menuEmpleado();
+                        break;
+                    case Rol::CLIENTE:
+                        Vista::menuCliente();
+                        break;
+                }
+                break;
+            }
+        }
+    }
+}
